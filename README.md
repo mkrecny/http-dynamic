@@ -4,16 +4,17 @@
 
 # Usage
 Start up http-dynamic
+```bash
 		./lib/http-dynamic
-
+```
 Add scripts (any language) to the scripts directory
-'''php
+```php
 <?php
   echo 'hello from php'."\n";
   echo 'arguments are '.$argv[1]."\n";
   exit();
 ?>
-'''
+```
 
 Make a HTTP request for that script
 		curl localhost:8080/hello.php?foo=bar
