@@ -2,6 +2,7 @@
 
 ## Usage
 
+Start http-dynamic
 <pre>
   ./lib/http-dynamic
 </pre>
@@ -18,6 +19,10 @@ scripts/hello.rb
 And execute over HTTP:
 <pre>
 	curl localhost:8080/hello.rb?foo=bar
-</pre>	
+</pre>
+Should output:
+<pre>
+	hello from ruby
+	arguments are foo=bar
+</pre>		
 (all data written to stdout will be buffered and returned to HTTP client when script exits)
-
