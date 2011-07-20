@@ -1,0 +1,50 @@
+#!/usr/bin/env node
+
+var path = require('path'),
+    colors = require('colors'),
+    http = require('http'),
+    spawn = require('child_process').spawn,
+    conf = require('../conf'),
+    url = require('url');
+
+function serveDynamic(req, callback){
+  var _path = req.url.split('?'),
+  ext = _path[0].split('.')[1],
+  path = __dirname+'/../scripts'+_path[0],
+  qry = _path[1] || null,
+  exec = spawn(conf[ext], [path, qry]);
+  
+  exec.stdout.setEncoding('utf8');
+  exec.stderr.setEncoding('utf8');
+  var buffer = '', error;
+  exec.stdout.on('data', function(data){
+    buffer+=data;
+  });
+  exec.stderr.on('data', function(data){
+    if (error!==null) return error = data;
+    return error+=data;
+  });
+  exec.on('exit', function(){
+    return callback(error, buffer); 
+  });
+};
+
+var port = 8080, host = 'localhost';
+
+http.createServer(function(request, response) {
+  request.on('end', function() {
+    serveDynamic(request, function(err, out){
+      var r = err || out;
+      response.end(r);
+      console.log('['.grey+'served'.yellow+'] '.grey + request.url);
+    });
+  });
+}).listen(port, host);
+
+console.log('http-server successfully started: '.green + host.cyan + ':'.cyan + port.toString().cyan);
+console.log('Hit CTRL-C to stop the server')
+
+process.on('SIGINT', function() {
+  console.log('http-server stopped.'.red);
+  return process.exit();
+});
