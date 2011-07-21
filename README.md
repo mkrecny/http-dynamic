@@ -1,5 +1,9 @@
 # http-dynamic -- execute any script over HTTP
 
+## Note
+
+This is an experiment. It is not performant! Do not use in production.
+
 ## Usage
 
 Start http-dynamic
